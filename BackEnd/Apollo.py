@@ -283,7 +283,7 @@ def return_current_song():
 		pass
 	return json.dumps(curr_song)
 
-@app.route('/api/shuffle', methods = ['POST']) #this will shuffle what is in the queue. It would not need to be changed if you had loaded a playlist
+@app.route('/api/shuffle', methods = ['POST'])
 def shuffle():
 	global current_playlist
 	current_playlist = client.playlistinfo()
@@ -296,7 +296,7 @@ def shuffle():
 def unshuffle():
 	client.rescan() 
 	#play_pause() not sure if we should pause before we do our stuff
-	playlistlength = int(client.status()['playlistlength']) #accoutnig for 0 based positions
+	playlistlength = int(client.status()['playlistlength']) #accounting for 0 based positions
 		
 	for song in range(1,playlistlength):
 		client.delete(1)

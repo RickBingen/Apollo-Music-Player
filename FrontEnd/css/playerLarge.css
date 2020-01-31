@@ -141,6 +141,7 @@ td{
   padding-right: 5%;
   float: right;
   background-color: transparent;
+  cursor: pointer;
 
 }
 .songSearch{
@@ -148,18 +149,21 @@ td{
   padding-right: 1%;
   float: right;
   background-color: transparent;
+  cursor: pointer;
 }
 .albums{
   padding-top: 2.5%;
   padding-right: 5%;
   float: right;
   background-color: transparent;
+  cursor: pointer;
 }
 .playlist{
   float: right;
   padding-right: 5%;
   padding-top: 2.5%;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .artists{
@@ -167,6 +171,7 @@ td{
   padding-right: 5%;
   padding-top: 2.5%;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .currentlyPlaying{
@@ -204,12 +209,6 @@ td{
   font-weight: 200;
 }
 
-.volumeBar{
-  padding-top: 5%;
-  width: 100%;
-  padding-left: 10%;
-}
-
 .playbackControls{
   color: white;
   justify-content: center;
@@ -221,6 +220,7 @@ td{
   opacity: 0.6;
   padding-left: 10%;
   padding-top: .5%;
+  cursor: pointer;
 }
 
 .backButton:hover {
@@ -233,7 +233,7 @@ td{
   opacity: 0.6;
   margin-left: 25%;
   margin-right: 25%;
-
+  cursor: pointer;
 }
 
 .playButton:hover{
@@ -247,6 +247,7 @@ td{
   opacity: 0.6;
   padding-right: 10%;
   padding-top: .5%;
+  cursor: pointer;
 }
 
 .ffButton:hover{
@@ -255,22 +256,9 @@ td{
   padding-top: .5%;
 }
 
-.volume{
-  opacity: 0.95;
-  padding-left: 10%;
-  width: 90%;
-  max-width: 100%;
-}
-
-.volume:hover{
-  opacity: 1;
-  padding-left: 10%;
-  width: 90%;
-  max-width: 100%;
-}
-
 .Shuffle{
   opacity: 0.6;
+  cursor: pointer;
 }
 
 .Shuffle:hover{
@@ -388,11 +376,61 @@ td{
 #rewind
 {
   display: inline;
+  cursor: pointer;
 }
 
 #rewindSong
 {
   display: none;
   color: #f7931E;
+}
+
+#player {
+  width: 350px;
+  height: 50px;
+  position: relative;
+  margin: 0 auto;
+  padding-top: 10%;
+  padding-left: 10%;
+}
+
+i.fa-volume-up {
+  margin-right: 0px;
+  right: 0;
+  position: absolute;
+  margin-top: -6px;
+  color: #666;
+}
+
+#volume {
+  position: absolute;
+  left: 20px;
+  margin: 0 auto;
+  height: 5px;
+  width: 300px;
+  background: #555;
+  border-radius: 15px;
+  cursor: pointer;
+}
+  
+.ui-slider-range-min {
+  height: 5px;
+  width: 300px;
+  position: absolute;
+  background: white;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+}
+
+.ui-slider-handle {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background: #666;
+  position: absolute;
+  margin-left: -8px;
+  margin-top: -4px;
+  outline: none;
 }
 

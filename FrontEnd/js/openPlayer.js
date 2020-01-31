@@ -1,6 +1,16 @@
 var objList;
 
 function boot(){
+$("#volume").slider({
+    min: 0,
+    max: 100,
+    value: 50,
+    range: "min",
+    slide: function(event, ui) {
+      setVolume(ui.value);
+    }
+  });
+
   fetchAllSongs();
 }
 
@@ -334,11 +344,9 @@ function prevSong()
   });
 }
 
-function SetVolume(val) 
+function setVolume(val) 
 {
-  var player = document.getElementById('vol-control');
-  player.volume = val / 100;
-
+  console.log(val);
   var asJSON = JSON.stringify({'volume':val});
 
   fetch('http://localhost:5000/api/volume', {
