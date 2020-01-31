@@ -61,34 +61,23 @@ function closeCurrent() {
 function shuffle() {
   var x = document.getElementById("shuffle");
   if (x.style.color === "white") {
-      x.style.color = "#f7931E";
-       /* shuffle on*/
-      var j = fetch('http://localhost:5000/api/shuffle', { method: 'POST', mode: 'cors' });
-      j.then(function (response) { //fask should have printed 
-          return response.text();
-      }).then(function (text) {
-          currentlyPlaying();
-          //console.log('POST response: ');
-          //console.log(text);
-      });
-     /* shuffle on*/
+    x.style.color = "#f7931E";
+    /* shuffle on*/
+    var j = fetch('http://localhost:5000/api/shuffle', { method: 'POST', mode: 'cors' });
+    j.then(function (response) {  
+      return response.text();
+    }).then(function (text) {
+      currentlyPlaying();
+    });
   } else {
     x.style.color = "white";
-  /* shuffle off*/
-      var j = fetch('http://localhost:5000/api/unshuffle', { method: 'POST', mode: 'cors' });
-      j.then(function (response) { //fask should have printed 
-          return response.text();
-      }).then(function (text) {
-          currentlyPlaying();
-          //console.log('POST response: ');
-          //console.log(text);
-      });
+    /* shuffle off*/
   }
 }
 
 function repeatSong() {
     var j = fetch('http://localhost:5000/api/repeatSong', { method: 'POST', mode: 'cors' });
-    j.then(function (response) { //fask should have printed 
+    j.then(function (response) { 
         return response.text();
     }).then(function (text) {
         console.log('POST response: ');
@@ -111,7 +100,7 @@ function repeatSong() {
 
 function repeat() {
     var j = fetch('http://localhost:5000/api/repeat', { method: 'POST', mode: 'cors' });
-    j.then(function (response) { //fask should have printed 
+    j.then(function (response) {
         return response.text();
     }).then(function (text) {
         console.log('POST response: ');
@@ -130,7 +119,7 @@ function repeat() {
 
 function repeatoff() {
     var j = fetch('http://localhost:5000/api/repeatoff', { method: 'POST', mode: 'cors' });
-    j.then(function (response) { //fask should have printed 
+    j.then(function (response) { 
         return response.text();
     }).then(function (text) {
         console.log('POST response: ');
@@ -153,9 +142,7 @@ function fetchAllSongs() {
   .then(function(response) {
     return response.json();
     }).then(function (obj) {
-    //console.log('POST response: ');
     objList = obj;
-    //console.log(objList);
     boot2();
   });
 }
@@ -166,46 +153,64 @@ function generateLibrary() {
   var songList = document.getElementById("libraryBody");
   for (var i = 0; i < library.length; i++) {
     var song = document.createElement("tr");
-    /*
-    var id= library[i].id;
-    id = parse.JSON(id);
-    song.setAttribute ('onclick' , function idSendPlay() {
-      fetch('http://localhost:5000/api/play_selected', {method: 'POST', mode: "cors", body: id, headers:{"Content-Type": 'application/json'}
-      })
-      .then(function(response){
-         return response.text();
-      })
-      .then(function(text){
-      });
-    });
-    */
-      var cell = document.createElement("td");
-      var songName = document.createTextNode(library[i].title);
-      cell.appendChild(songName);
-      song.appendChild(cell);
 
-      cell = document.createElement("td");
-      var artistName = document.createTextNode(library[i].artist);
-      cell.appendChild(artistName);
-      song.appendChild(cell);
+    song.setAttribute("id", library[i].id);
+    song.setAttribute("class", "libraryRow");
+    addRowHandlers();
+
+    var cell = document.createElement("td");
+    var songName = document.createTextNode(library[i].title);
+    cell.appendChild(songName);
+    song.appendChild(cell);
+
+    cell = document.createElement("td");
+    var artistName = document.createTextNode(library[i].artist);
+    cell.appendChild(artistName);
+    song.appendChild(cell);
 
 
-      cell = document.createElement("td");
-      var albumName = document.createTextNode(library[i].album);
-      cell.appendChild(albumName);
-      song.appendChild(cell);
+    cell = document.createElement("td");
+    var albumName = document.createTextNode(library[i].album);
+    cell.appendChild(albumName);
+    song.appendChild(cell);
 
+    cell = document.createElement("td");
+    songLength = library[i].duration;
+    minutes = (songLength/60);
+    minutes = minutes.toFixed(2);
+    var duration = document.createTextNode(minutes);
+    cell.appendChild(duration);
+    song.appendChild(cell);
 
-      cell = document.createElement("td");
-      songLength = library[i].duration;
-      minutes = (songLength/60);
-      minutes = minutes.toFixed(2);
-      var duration = document.createTextNode(minutes);
-      cell.appendChild(duration);
-      song.appendChild(cell);
-
-    songList.appendChild(song);
+  songList.appendChild(song);
   }
+}
+
+function addRowHandlers() {
+  var table = document.getElementById("libraryTable");
+  var rows = table.getElementsByTagName("tr");
+  for (i = 0; i < rows.length; i++) {
+      var currentRow = table.rows[i];
+      var createClickHandler = function(row) 
+          {
+              return function() { 
+                  var id = row.id;
+                  idSendPlay(id)
+                               };
+          };
+      currentRow.onclick = createClickHandler(currentRow);
+  }
+}
+
+function idSendPlay(val) {var asJSON = JSON.stringify({'id':val});fetch('http://localhost:5000/api/play_selected', {
+  method: 'POST',
+  mode: "cors",
+  body: asJSON,
+  headers:{"Content-Type": 'application/json'}
+  }).then(function(response){
+    return response.text();
+  }).then(function(text){
+  });
 }
 
 function addAlbums() { 
@@ -228,7 +233,6 @@ function addAlbums() {
       img.classList.add("albumType");
       img.setAttribute("id" , library[i].pic);
       document.getElementById("mainAlbums").append(img);
-      //console.log(img);
     }
   }
   albumButtons();
@@ -295,12 +299,10 @@ function togglePlaying()
   document.getElementById("play").style.display = "none";
   
   var j =fetch('http://localhost:5000/api/play', {method: 'POST', mode: 'cors'});
-    j.then(function(response) { //fask should have printed 
+    j.then(function(response) {
     return response.text();
     }).then(function (text) {
     currentlyPlaying();
-    //console.log('POST response: ');
-    //console.log(text);
   });
 }
 
@@ -311,7 +313,6 @@ function toggleStopped()
   document.getElementById("play").style.display = "inline";
 
   fetch('http://localhost:5000/api/play', {method: 'POST', mode: 'cors'}).then(function(response) {
-    //console.log(response);
   });
 }
 
@@ -321,8 +322,6 @@ function nextSong()
   return response.text();
   }).then(function (text) {
   currentlyPlaying();
-  //console.log('POST response: ');
-  //console.log(text);
   });
 }
 
@@ -332,22 +331,16 @@ function prevSong()
   return response.text();
   }).then(function (text) {
     currentlyPlaying();
-    //console.log('GET response: ');
-    //console.log(text);
   });
 }
 
 function SetVolume(val) 
 {
   var player = document.getElementById('vol-control');
-  //console.log('Before: ' + player.volume);
   player.volume = val / 100;
-  //console.log('After: ' + player.volume);
 
   var asJSON = JSON.stringify({'volume':val});
-  //console.log(asJSON)
 
-  //POST
   fetch('http://localhost:5000/api/volume', {
             method: 'POST',
             mode: "cors",
@@ -358,9 +351,6 @@ function SetVolume(val)
   }).then(function(response){
     return response.text();
   }).then(function(text){
-    //console.log('POST reponse: ');
-
-    //console.log(text);
   });
 }
 
@@ -371,12 +361,13 @@ function currentlyPlaying() {
     return response.json();
     })
     .then(function (obj) {
-    //console.log(obj);
-    //console.log(obj.palette[0]);
     var r = obj.palette[0][0];
     var g = obj.palette[0][1];
     var b = obj.palette[0][2];
-    document.getElementById('currentlyPlaying').style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+    var r2 = obj.palette[1][0];
+    var g2 = obj.palette[1][1];
+    var b2 = obj.palette[1][2];
+    document.getElementById('currentlyPlaying').style.backgroundImage = 'linear-gradient(to bottom, rgba('+r+','+g+','+b+','+1+'), rgba('+r2+','+g2+','+b2+','+0+'))';
     if (obj.pic == '' || obj.pic == null || obj.pic == 'none') {
       document.getElementById('currentAlbum').setAttribute('src', "./images/AlbumArt-01.png");
     }
