@@ -1,270 +1,171 @@
-var objList;
+const app = new Vue({
+  el: '#app',
+  data: {
+    objList: {},
+    songs: [],
+    albums: [],
+    artists: [],
+    playlists: []
+  },
+  methods: {
+    setVolume: function(val){
+      var asJSON = JSON.stringify({'volume':val});
 
-function boot(){
-$("#volume").slider({
-    min: 0,
-    max: 100,
-    value: 50,
-    range: "min",
-    slide: function(event, ui) {
-      setVolume(ui.value);
-    }
-  });
-
-  fetchAllSongs();
-}
-
-function boot2(){
-  currentlyPlaying();
-  addAlbums();
-  addPlaylists();
-  addArtists();
-  generateLibrary();
-}
-
-function openSearch() {
- if (document.getElementById("mainSearch").style.display = "none"){
-  document.getElementById("mainSearch").style.display = "block";
-  document.getElementById("mainPlaylists").style.display = "none";
-  document.getElementById("mainArtists").style.display = "none";
-  document.getElementById("mainAlbums").style.display = "none";
- }
-}
-
-function go2Playlists(){
-  if (document.getElementById("mainPlaylists").style.display = "none"){
-  document.getElementById("mainPlaylists").style.display = "block";
-  document.getElementById("mainArtists").style.display = "none";
-  document.getElementById("mainAlbums").style.display = "none";
-  document.getElementById("mainSearch").style.display = "none";
-  }
-}
-function go2Albums(){
-  if (document.getElementById("mainAlbums").style.display = "none"){
-  document.getElementById("mainAlbums").style.display = "block";
-  document.getElementById("mainPlaylists").style.display = "none"
-  document.getElementById("mainArtists").style.display = "none"
-  document.getElementById("mainSearch").style.display = "none"
-  }
-}
-function go2Artists(){
-  if (document.getElementById("mainArtists").style.display = "none"){
-  document.getElementById("mainArtists").style.display = "block";
-  document.getElementById("mainPlaylists").style.display = "none";
-  document.getElementById("mainAlbums").style.display = "none";
-  document.getElementById("mainSearch").style.display = "none";
-  }
-}
-
-function current() {
-  if (document.getElementById("currentCue").style.display = "none"){
-   document.getElementById("currentCue").style.display = "block";
-  }
-}
-
-function closeCurrent() {
-  if (document.getElementById("currentCue").style.display = "block"){
-   document.getElementById("currentCue").style.display = "none";
-  }
-}
-
-function shuffle() {
-  var x = document.getElementById("shuffle");
-  if (x.style.color === "white") {
-    x.style.color = "#f7931E";
-    /* shuffle on*/
-    var j = fetch('http://localhost:5000/api/shuffle', { method: 'POST', mode: 'cors' });
-    j.then(function (response) {  
-      return response.text();
-    }).then(function (text) {
-      currentlyPlaying();
-    });
-  } else {
-    x.style.color = "white";
-    /* shuffle off*/
-  }
-}
-
-function repeatSong() {
-    var j = fetch('http://localhost:5000/api/repeatSong', { method: 'POST', mode: 'cors' });
-    j.then(function (response) { 
+      fetch('http://localhost:5000/api/volume', {
+                method: 'POST',
+                mode: "cors",
+                body: asJSON,
+                headers:{
+                    "Content-Type": 'application/json'
+                }
+      }).then(function(response){
         return response.text();
-    }).then(function (text) {
-        console.log('POST response: ');
-        console.log(text);
-    });
-
-    var x = document.getElementById("rewind");
-    var y = document.getElementById("rewindSong");
-    if (x.style.display === "inline") {
-        x.style.display = "none";
-        y.style.display = "inline";
-        /* repeat song on*/
-    } else {
-        x.style.color = "white";
-        x.style.display = "inline";
-        y.style.display = "none";
-        /* repeat off*/
-    }
-}
-
-function repeat() {
-    var j = fetch('http://localhost:5000/api/repeat', { method: 'POST', mode: 'cors' });
-    j.then(function (response) {
-        return response.text();
-    }).then(function (text) {
-        console.log('POST response: ');
-        console.log(text);
-    });
-
-    var x = document.getElementById("rewind");
-    if (x.style.color === "white") {
-        x.style.color = "#f7931E";
-        /* repeat playlist on*/
-    } else {
-        x.style.color = "white";
-        /* repeat off*/
-    }
-}
-
-function repeatoff() {
-    var j = fetch('http://localhost:5000/api/repeatoff', { method: 'POST', mode: 'cors' });
-    j.then(function (response) { 
-        return response.text();
-    }).then(function (text) {
-        console.log('POST response: ');
-        console.log(text);
-    });
-
-    var x = document.getElementById("rewind");
-    var y = document.getElementById("rewindSong");
-
-    if (y.style.display === "inline" || x.style.color === "#f7931E") {
-        x.style.color = "white";
-        x.style.display = "inline";
-        y.style.display = "none";
-        /* repeat song off*/
-    }
-}
-
-function fetchAllSongs() {
-  fetch('http://localhost:5000/api/obj_list', {method: 'GET', mode: 'cors'})
-  .then(function(response) {
-    return response.json();
-    }).then(function (obj) {
-    objList = obj;
-    boot2();
-  });
-}
-
-function generateLibrary() {
-  var library = [];
-  library = objList.songs;
-  var songList = document.getElementById("libraryBody");
-  for (var i = 0; i < library.length; i++) {
-    var song = document.createElement("tr");
-
-    song.setAttribute("id", library[i].id);
-    song.setAttribute("class", "libraryRow");
-    addRowHandlers();
-
-    var cell = document.createElement("td");
-    var songName = document.createTextNode(library[i].title);
-    cell.appendChild(songName);
-    song.appendChild(cell);
-
-    cell = document.createElement("td");
-    var artistName = document.createTextNode(library[i].artist);
-    cell.appendChild(artistName);
-    song.appendChild(cell);
-
-
-    cell = document.createElement("td");
-    var albumName = document.createTextNode(library[i].album);
-    cell.appendChild(albumName);
-    song.appendChild(cell);
-
-    cell = document.createElement("td");
-    songLength = library[i].duration;
-    minutes = (songLength/60);
-    minutes = minutes.toFixed(2);
-    var duration = document.createTextNode(minutes);
-    cell.appendChild(duration);
-    song.appendChild(cell);
-
-  songList.appendChild(song);
-  }
-}
-
-function addRowHandlers() {
-  var table = document.getElementById("libraryTable");
-  var rows = table.getElementsByTagName("tr");
-  for (i = 0; i < rows.length; i++) {
-      var currentRow = table.rows[i];
-      var createClickHandler = function(row) 
+      }).then(function(text){});
+    },
+    addRowHandlers: function(){
+      var table = document.getElementById("libraryTable");
+      var rows = table.getElementsByTagName("tr");
+      for (i = 0; i < rows.length; i++) {
+        var currentRow = table.rows[i];
+        var createClickHandler = function(row) 
           {
-              return function() { 
-                  var id = row.id;
-                  idSendPlay(id)
-                               };
+            return function() { 
+              var id = row.id;
+              idSendPlay(id)
+            };
           };
-      currentRow.onclick = createClickHandler(currentRow);
-  }
-}
+        currentRow.onclick = createClickHandler(currentRow);
+      }
+    },
+    progressBar: function(obj){
+      var bar = document.getElementById("progBar");
+      barPercent = (obj.elapsed / obj.duration) * 100;
+      bar.style.width = String(barPercent) + '%';
+    },
+    secondsTo_MMSS: function(seconds){
+      durMin = seconds / 60;
+      durSec = seconds % 60;
+      durMin = durMin.toFixed(0);
+      durSec = durSec.toFixed(0);
+      function pad(value) {
+        if(value < 10) {
+            return '0' + value;
+        } else {
+            return value;
+        }
+      }
+      durMin = pad(durMin);
+      durSec = pad(durSec);
+      durMinStr = String(durMin);
+      durSecStr = String(durSec);
+      return durMinStr + ':' + durSecStr;
+    }, 
+    currentlyPlaying: function(){
+      fetch('http://localhost:5000/api/get_current', {method: 'GET', mode: 'cors'})
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function (obj) {
+        var r = obj.palette[0][0];
+        var g = obj.palette[0][1];
+        var b = obj.palette[0][2];
+        var r2 = obj.palette[1][0];
+        var g2 = obj.palette[1][1];
+        var b2 = obj.palette[1][2];
+        document.getElementById('currentlyPlaying').style.backgroundImage = 'linear-gradient(to bottom, rgba('+r+','+g+','+b+','+1+'), rgba('+r2+','+g2+','+b2+','+0+'))';
+        if (obj.pic == '' || obj.pic == null || obj.pic == 'none') {
+          document.getElementById('currentAlbum').setAttribute('src', "./images/AlbumArt-01.png");
+        }
+        else {
+          document.getElementById('currentAlbum').setAttribute('src', obj.pic);
+        }
+        document.getElementById('returnCurrentSong').innerHTML = obj.title;
+        document.getElementById('returnCurrentArtist').innerHTML = obj.artist;
+        document.getElementById('returnCurrentDuration').innerHTML = app.secondsTo_MMSS(obj.duration);
+        document.getElementById('returnCurrentElapsed').innerHTML = app.secondsTo_MMSS(obj.elapsed);
+        setInterval(app.currentlyPlaying(), 1000);
+        setInterval(app.progressBar(obj), 500);
+        delete obj
+      });
+    },
+    generateLibrary: function(){
+      var library = [];
+      library = this.objList.songs;
+      var songList = document.getElementById("libraryBody");
+      for (var i = 0; i < library.length; i++) {
+        var song = document.createElement("tr");
 
-function idSendPlay(val) {var asJSON = JSON.stringify({'id':val});fetch('http://localhost:5000/api/play_selected', {
-  method: 'POST',
-  mode: "cors",
-  body: asJSON,
-  headers:{"Content-Type": 'application/json'}
-  }).then(function(response){
-    return response.text();
-  }).then(function(text){
-  });
-}
+        song.setAttribute("id", library[i].id);
+        song.setAttribute("class", "libraryRow");
+        this.addRowHandlers();
 
-function addAlbums() { 
-  var library = [];
-  library = objList.albums;
-  for(var i = 0; i < library.length; i++){
-     if ((library[i].pic == null) || (library[i].pic == "none")){
-        var img = document.createElement('img');
-        img.setAttribute("src", "./images/AlbumArt-01.png");
-        img.classList.add("square");
-        img.classList.add("albumType");
-        img.setAttribute("id", library[i].pic);
-        document.getElementById("mainAlbums").append(img);
-    }
-    else 
-    {
-      var img = document.createElement('img');
-      img.setAttribute("src" , library[i].pic);
-      img.classList.add("square");
-      img.classList.add("albumType");
-      img.setAttribute("id" , library[i].pic);
-      document.getElementById("mainAlbums").append(img);
-    }
-  }
-  albumButtons();
-}
+        var cell = document.createElement("td");
+        var songName = document.createTextNode(library[i].title);
+        cell.appendChild(songName);
+        song.appendChild(cell);
 
-function albumButtons(){
-  var library = [];
-  library = objList.albums;
-  for(var i = 0; i < library.length; i++){
-    if (library[i].pic == "./images/Logo1.png"){
-      continue;
-    }
-    else 
-    {
-    document.getElementById(library[i].pic).setAttribute('onclick' ,function changePlaying() {
-      document.getElementById('currentAlbum').src=library[i];
-    });
-  }
-}
-}
+        cell = document.createElement("td");
+        var artistName = document.createTextNode(library[i].artist);
+        cell.appendChild(artistName);
+        song.appendChild(cell);
 
-function addPlaylists() { 
+
+        cell = document.createElement("td");
+        var albumName = document.createTextNode(library[i].album);
+        cell.appendChild(albumName);
+        song.appendChild(cell);
+
+        cell = document.createElement("td");
+        songLength = library[i].duration;
+        minutes = (songLength/60);
+        minutes = minutes.toFixed(2);
+        var duration = document.createTextNode(minutes);
+        cell.appendChild(duration);
+        song.appendChild(cell);
+
+        songList.appendChild(song);
+      }
+    },
+    addAlbums: function(){
+      var library = [];
+      library = this.objList.albums;
+      for(var i = 0; i < library.length; i++){
+        if ((library[i].pic == null) || (library[i].pic == "none")){
+          var img = document.createElement('img');
+          img.setAttribute("src", "./images/AlbumArt-01.png");
+          img.classList.add("square");
+          img.classList.add("albumType");
+          img.setAttribute("id", library[i].pic);
+          document.getElementById("mainAlbums").append(img);
+        }
+        else 
+        {
+          var img = document.createElement('img');
+          img.setAttribute("src" , library[i].pic);
+          img.classList.add("square");
+          img.classList.add("albumType");
+          img.setAttribute("id" , library[i].pic);
+          document.getElementById("mainAlbums").append(img);
+        }
+      }
+      this.albumButtons();
+    },
+    albumButtons: function(){
+      var library = [];
+      library = this.objList.albums;
+      for(var i = 0; i < library.length; i++){
+        if (library[i].pic == "./images/Logo1.png"){
+          continue;
+        }
+        else 
+        {
+          document.getElementById(library[i].pic).setAttribute('onclick' ,function changePlaying() {
+            document.getElementById('currentAlbum').src=library[i];
+          });
+        }
+      }
+    },
+    addPlaylists: function(){
       var img = document.createElement('img');
       img.setAttribute('onclick', function newPlaylist(){
         document.getElementById("mainPlaylist").append(img);
@@ -273,146 +174,226 @@ function addPlaylists() {
       img.classList.add("square");
       img.setAttribute("onclick" , "current()")
       document.getElementById("mainPlaylists").append(img);
-}
+    },
+    addArtists: function(){
+      var library = [];
+      library = this.objList.artists;
+      let artistSet = new Set();
+      var artistTable = document.createElement('table');
+      artistTable.classList.add("artistDisplay");
 
-function addArtists() { 
-  var library = [];
-  library = objList.artists;
-  let artistSet = new Set();
-  var artistTable = document.createElement('table');
-  artistTable.classList.add("artistDisplay");
+      for (var i=0; i < library.length; i++){
+        artistSet.add(library[i].name);
+      };
 
-  for (var i=0; i < library.length; i++){
-    artistSet.add(library[i].name);
-  };
+      let artistArray = Array.from(artistSet);
+      artistArray.sort();
+      for(var i =0; i<artistArray.length; i++){
 
-  let artistArray = Array.from(artistSet);
-  artistArray.sort();
-  for(var i =0; i<artistArray.length; i++){
+        var row = document.createElement("tr");
 
-    var row = document.createElement("tr");
+        var artistName = document.createElement("td");
+        var artist = document.createTextNode(artistArray[i]);
+        artistName.append(artist);
+        row.append(artistName);
+        row.setAttribute("id" , "artist-" + artistArray[i]);
+        artistTable.append(row);
+      } 
+      document.getElementById("mainArtists").append(artistTable);
+    },
+    boot2: function(){
+      this.currentlyPlaying();
+      this.addAlbums();
+      this.addPlaylists();
+      this.addArtists();
+      this.generateLibrary();
+    },
+    fetchAllSongs: function(){
+      fetch('http://localhost:5000/api/obj_list', {method: 'GET', mode: 'cors'})
+        .then(function(response) {
+            return response.json();
+          }).then(function (obj) {
+          app.objList = obj;
+          app.boot2();
+        });
+    }, 
+    boot: function(){
+      $("#volume").slider({
+        min: 0,
+        max: 100,
+        value: 50,
+        range: "min",
+        slide: function(event, ui) {
+          app.setVolume(ui.value);
+        }
+      });
 
-    var artistName = document.createElement("td");
-    var artist = document.createTextNode(artistArray[i]);
-    artistName.append(artist);
-    row.append(artistName);
-    row.setAttribute("id" , "artist-" + artistArray[i]);
-    artistTable.append(row);
-  } 
+      this.fetchAllSongs();
+    },
+    go2Songs: function(){
+      if (document.getElementById("mainSongs").style.display = "none"){
+        document.getElementById("mainSongs").style.display = "block";
+        document.getElementById("mainPlaylists").style.display = "none";
+        document.getElementById("mainArtists").style.display = "none";
+        document.getElementById("mainAlbums").style.display = "none";
+      }
+    },
+    go2Playlists: function(){
+      if (document.getElementById("mainPlaylists").style.display = "none"){
+        document.getElementById("mainPlaylists").style.display = "block";
+        document.getElementById("mainArtists").style.display = "none";
+        document.getElementById("mainAlbums").style.display = "none";
+        document.getElementById("mainSongs").style.display = "none";
+      }
+    },
+    go2Albums: function(){
+      if (document.getElementById("mainAlbums").style.display = "none"){
+        document.getElementById("mainAlbums").style.display = "block";
+        document.getElementById("mainPlaylists").style.display = "none"
+        document.getElementById("mainArtists").style.display = "none"
+        document.getElementById("mainSongs").style.display = "none"
+      }
+    },
+    go2Artists: function(){
+      if (document.getElementById("mainArtists").style.display = "none"){
+        document.getElementById("mainArtists").style.display = "block";
+        document.getElementById("mainPlaylists").style.display = "none";
+        document.getElementById("mainAlbums").style.display = "none";
+        document.getElementById("mainSongs").style.display = "none";
+      }
+    },
+    current: function(){
+      if (document.getElementById("currentCue").style.display = "none"){
+        document.getElementById("currentCue").style.display = "block";
+      }
+    },
+    closeCurrent: function(){
+      if (document.getElementById("currentCue").style.display = "block"){
+        document.getElementById("currentCue").style.display = "none";
+      }
+    },
+    shuffle: function(){
+      var x = document.getElementById("shuffle");
+      if (x.style.color === "white") {
+        x.style.color = "#f7931E";
+        /* shuffle on*/
+        var j = fetch('http://localhost:5000/api/shuffle', { method: 'POST', mode: 'cors' });
+        j.then(function (response) {  
+          return response.text();
+        }).then(function (text) {
+          app.currentlyPlaying();
+        });
+      } else {
+        x.style.color = "white";
+        /* shuffle off*/
+      }
+    },
+    repeat: function(){
+      var j = fetch('http://localhost:5000/api/repeat', { method: 'POST', mode: 'cors' });
+      j.then(function (response) {
+        return response.text();
+      }).then(function (text) {
+        console.log('POST response (repeat playlist): ');
+        console.log(text);
+      });
 
-  document.getElementById("mainArtists").append(artistTable);
-}
+      var x = document.getElementById("rewind");
+      if (x.style.color === "white") {
+        x.style.color = "#f7931E";
+        /* repeat playlist on*/
+      } else {
+        x.style.color = "white";
+        /* repeat off*/
+      }
+    },
+    repeatOff: function(){
+      var j = fetch('http://localhost:5000/api/repeatoff', { method: 'POST', mode: 'cors' });
+      j.then(function (response) { 
+          return response.text();
+      }).then(function (text) {
+          console.log('POST response (repeat off): ');
+          console.log(text);
+      });
 
-function togglePlaying()
-{
-  document.getElementById("pause").style.display = "inline";
-  document.getElementById("play").style.display = "none";
-  
-  var j =fetch('http://localhost:5000/api/play', {method: 'POST', mode: 'cors'});
-    j.then(function(response) {
-    return response.text();
-    }).then(function (text) {
-    currentlyPlaying();
-  });
-}
+      var x = document.getElementById("rewind");
+      var y = document.getElementById("rewindSong");
 
-function toggleStopped()
-{
-    
-  document.getElementById("pause").style.display = "none";
-  document.getElementById("play").style.display = "inline";
-
-  fetch('http://localhost:5000/api/play', {method: 'POST', mode: 'cors'}).then(function(response) {
-  });
-}
-
-function nextSong()
-{
-  fetch('http://localhost:5000/api/next', {method: 'GET', mode: 'cors'}).then(function(response) {
-  return response.text();
-  }).then(function (text) {
-  currentlyPlaying();
-  });
-}
-
-function prevSong()
-{
-  fetch('http://localhost:5000/api/previous', {method: 'GET', mode: 'cors'}).then(function(response) { 
-  return response.text();
-  }).then(function (text) {
-    currentlyPlaying();
-  });
-}
-
-function setVolume(val) 
-{
-  console.log(val);
-  var asJSON = JSON.stringify({'volume':val});
-
-  fetch('http://localhost:5000/api/volume', {
-            method: 'POST',
-            mode: "cors",
-            body: asJSON,
-            headers:{
-                "Content-Type": 'application/json'
-            }
-  }).then(function(response){
-    return response.text();
-  }).then(function(text){
-  });
-}
-
-
-function currentlyPlaying() {
-  fetch('http://localhost:5000/api/get_current', {method: 'GET', mode: 'cors'})
-  .then(function(response) {
-    return response.json();
-    })
-    .then(function (obj) {
-    var r = obj.palette[0][0];
-    var g = obj.palette[0][1];
-    var b = obj.palette[0][2];
-    var r2 = obj.palette[1][0];
-    var g2 = obj.palette[1][1];
-    var b2 = obj.palette[1][2];
-    document.getElementById('currentlyPlaying').style.backgroundImage = 'linear-gradient(to bottom, rgba('+r+','+g+','+b+','+1+'), rgba('+r2+','+g2+','+b2+','+0+'))';
-    if (obj.pic == '' || obj.pic == null || obj.pic == 'none') {
-      document.getElementById('currentAlbum').setAttribute('src', "./images/AlbumArt-01.png");
+      if (y.style.display === "inline" || x.style.color === "#f7931E") {
+          x.style.color = "white";
+          x.style.display = "inline";
+          y.style.display = "none";
+          /* repeat song off*/
+      }
+    },    
+    idSendPlay: function(val){
+      var asJSON = JSON.stringify({'id':val});fetch('http://localhost:5000/api/play_selected', {
+      method: 'POST',
+      mode: "cors",
+      body: asJSON,
+      headers:{"Content-Type": 'application/json'}
+      }).then(function(response){
+        return response.text();
+      }).then(function(text){
+      });
+    },    
+    togglePlaying: function(){
+      document.getElementById("pause").style.display = "inline";
+      document.getElementById("play").style.display = "none";
+      
+      var j =fetch('http://localhost:5000/api/play', {method: 'POST', mode: 'cors'});
+        j.then(function(response) {
+        return response.text();
+        }).then(function (text) {
+        app.currentlyPlaying();
+      });
+    },
+    toggleStopped: function(){
+      document.getElementById("pause").style.display = "none";
+      document.getElementById("play").style.display = "inline";
+      fetch('http://localhost:5000/api/play', {method: 'POST', mode: 'cors'}).then(function(response) {
+      });
+    },
+    nextSong: function(){
+      fetch('http://localhost:5000/api/next', {method: 'GET', mode: 'cors'}).then(function(response) {
+        return response.text();
+        }).then(function (text) {
+        app.currentlyPlaying();
+      });
+    },
+    prevSong: function(){
+      fetch('http://localhost:5000/api/previous', {method: 'GET', mode: 'cors'}).then(function(response) { 
+      return response.text();
+      }).then(function (text) {
+        app.currentlyPlaying();
+      });
     }
-    else {
-      document.getElementById('currentAlbum').setAttribute('src', obj.pic);
-    }
-    document.getElementById('returnCurrentSong').innerHTML = obj.title;
-    document.getElementById('returnCurrentArtist').innerHTML = obj.artist;
-    document.getElementById('returnCurrentDuration').innerHTML = secondsTo_MMSS(obj.duration);
-    document.getElementById('returnCurrentElapsed').innerHTML = secondsTo_MMSS(obj.elapsed);
-    setInterval(currentlyPlaying(), 1000);
-    setInterval(progressBar(obj), 500);
-    delete obj
-  });
-}
-
-function progressBar(obj) {
-  var bar = document.getElementById("progBar");
-    barPercent = (obj.elapsed / obj.duration) * 100;
-    bar.style.width = String(barPercent) + '%';
-}
-
-function secondsTo_MMSS(seconds) {
-  durMin = seconds / 60;
-  durSec = seconds % 60;
-  durMin = durMin.toFixed(0);
-  durSec = durSec.toFixed(0);
-  function pad(value) {
-    if(value < 10) {
-        return '0' + value;
-    } else {
-        return value;
-    }
+  },
+  mounted(){
+    this.boot();
   }
-  durMin = pad(durMin);
-  durSec = pad(durSec);
-  durMinStr = String(durMin);
-  durSecStr = String(durSec);
-  return durMinStr + ':' + durSecStr;
+})
+
+
+//TO DO redo repeat song/playlist
+function repeatSong(){
+  var j = fetch('http://localhost:5000/api/repeatSong', { method: 'POST', mode: 'cors' });
+  j.then(function (response) { 
+    return response.text();
+  }).then(function (text) {
+    console.log('POST response (repeat song): ');
+    console.log(text);
+  });
+
+  var x = document.getElementById("rewind");
+  var y = document.getElementById("rewindSong");
+  if (x.style.display === "inline") {
+    x.style.display = "none";
+    y.style.display = "inline";
+    /* repeat song on*/
+  } else {
+    x.style.color = "white";
+    x.style.display = "inline";
+    y.style.display = "none";
+    /* repeat off*/
+  }
 }

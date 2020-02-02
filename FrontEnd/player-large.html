@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<body onload="boot()">
+	<!--<body onload="boot()">-->
 	<title>
 		Apollo
 	</title>
@@ -17,108 +17,107 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="./css/playerLarge.css"/>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<script src="./js/openPlayer.js"></script>
-
 </head>
 <body>	
-
-<dir class="navigation-bar">
-		<i onclick="openSearch()" role="button" aria-expanded="false" class="fas fa-search searchButton navigation-bar"></i>
-		<i class="songSearch  navigation-bar" href="#" onclick="openSearch()" style="font-family: Azonix">Songs</i>
-		<i class="albums  navigation-bar" href="#" onclick="go2Albums()" style="font-family: Azonix">Albums</i>
-		<i class="playlist  navigation-bar" href="#"onclick="go2Playlists()" style="font-family: Azonix">Playlists</i>
-		<i class="artists  navigation-bar" href="#"onclick="go2Artists()" style="font-family: Azonix">Artists</i>
-	<div class="logoContainer">
-		<img id="logoBTN" class="logo-button" data-toggle="collapse" data-target="currentlyPlaying"src="./images/Logo.png"/>
-	</div>
-	<div class="apolloBrand" href="#">
-		APOLLO
-	</div>
-</dir>
-
-	<div id="currentlyPlaying"class="currentlyPlaying"style="background-color: rgb(26, 26, 26)">
-        <div class="currentlyShowing">
-			<i href="#" class = "artwork" id="returnCurrentAlbum"  onclick="filterSelection()"><img id="currentAlbum"class="playerAlbumArt" src="./images/Logo.png"/>
-			</i>
-		</div>
-		<div class="currentSong link">
-			<i id="returnCurrentSong" onclick="filterSelection()" >
-			</i>
-		</div>
-		<div class="currentArtist link">
-			<i id="returnCurrentArtist" onclick="filterSelection()" >
-			</i>
-		</div>
-		<div class="w3-container">
-			<div class="w3-light-grey w3-round">
-			  <div id="progBar" class="w3-green w3-round" style="height:7px;width:0%"></div>
+	<div id="app">
+		<div class="navigation-bar">
+				<!--<i onclick="go2Songs()" role="button" aria-expanded="false" class="fas fa-search searchButton navigation-bar"></i>-->
+				<i class="songSearch  navigation-bar" href="#" v-on:click="go2Songs" style="font-family: Azonix">Songs</i>
+				<i class="albums  navigation-bar" href="#" v-on:click="go2Albums" style="font-family: Azonix">Albums</i>
+				<i class="playlist  navigation-bar" href="#"v-on:click="go2Playlists" style="font-family: Azonix">Playlists</i>
+				<i class="artists  navigation-bar" href="#"v-on:click="go2Artists" style="font-family: Azonix">Artists</i>
+			<div class="logoContainer">
+				<img id="logoBTN" class="logo-button" data-toggle="collapse" data-target="currentlyPlaying"src="./images/Logo.png"/>
 			</div>
-		<div class="durations">
-			<i class="elapsed" href="#" style="font-family: Azonix" id="returnCurrentElapsed"></i>
-			<i class="duration" href="#" style="font-family: Azonix" id="returnCurrentDuration"></i>
-		</div>
-			<br>
-		</div>
-		<div class="playbackControls link">
-			<i style="color: white;" onclick="shuffle()" id="shuffle" class="Shuffle fas fa-random"></i>
-			<i onclick="prevSong()"class="backButton fas fa-step-backward"></i>
-			<i onclick="togglePlaying()" id="play" class="playButton fas fa-play"></i>
-			<i onclick="toggleStopped()" id="pause" class="fas fa-pause pause"></i>
-			<i onclick="nextSong()"class="ffButton fas fa-step-forward"></i>
-			<i style="color: white;" onclick="repeat()" ondblclick="repeatSong()"  class="Repeat fas fa-redo-alt" id="rewind"></i>
-			<i onclick="repeatoff()" id="rewindSong" class="fas fa-history" ></i>
-		</div>
-		<div id="player">
-			<div id="volume">
+			<div class="apolloBrand" href="#">
+				APOLLO
 			</div>
-			<i class="fa fa-volume-up"></i>
 		</div>
-	</div>
 
-	<div class = "mainPages">
-		<div id="currentCue">
-			<button id="exit" onclick="closeCurrent()">X</button>
-			<img id="Qart" src="https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/attachment_68585523.jpg?auto=format&q=60&fit=max&w=930">
-			<div id="header"><h1>CUETITLE</h1></div>
-			<div id="Q">
-				<table id="Qtable">
-				  <thead>
-					<tr>
-					  <th scope="col"></th>
-					  <th scope="col"></th>
-					  <th scope="col"></th>
-					  <th scope="col"></th>
-					</tr>
-				  </thead>
-				  <tbody id="Qtable">
-				  </tbody>
-				  </table>
+		<div id="currentlyPlaying"class="currentlyPlaying"style="background-color: rgb(26, 26, 26)">
+	        <div class="currentlyShowing">
+				<i href="#" class = "artwork" id="returnCurrentAlbum"  onclick="filterSelection()"><img id="currentAlbum"class="playerAlbumArt" src="./images/Logo.png"/>
+				</i>
 			</div>
+			<div class="currentSong link">
+				<i id="returnCurrentSong" onclick="filterSelection()" >
+				</i>
+			</div>
+			<div class="currentArtist link">
+				<i id="returnCurrentArtist" onclick="filterSelection()" >
+				</i>
+			</div>
+			<div class="w3-container">
+				<div class="w3-light-grey w3-round">
+				  <div id="progBar" class="w3-green w3-round" style="height:7px;width:0%"></div>
+				</div>
+			<div class="durations">
+				<i class="elapsed" href="#" style="font-family: Azonix" id="returnCurrentElapsed"></i>
+				<i class="duration" href="#" style="font-family: Azonix" id="returnCurrentDuration"></i>
+			</div>
+				<br>
+			</div>
+			<div class="playbackControls link">
+				<i style="color: white;" v-on:click="shuffle" id="shuffle" class="Shuffle fas fa-random"></i>
+				<i v-on:click="prevSong"class="backButton fas fa-step-backward"></i>
+				<i v-on:click="togglePlaying" id="play" class="playButton fas fa-play"></i>
+				<i v-on:click="toggleStopped" id="pause" class="fas fa-pause pause"></i>
+				<i v-on:click="nextSong"class="ffButton fas fa-step-forward"></i>
+				<i style="color: white;" v-on:click="repeat" ondblclick="repeatSong()"  class="Repeat fas fa-redo-alt" id="rewind"></i>
+				<i v-on:click="repeatOff" id="rewindSong" class="fas fa-history" ></i>
+			</div>
+			<div id="player">
+				<div id="volume">
+				</div>
+				<i class="fa fa-volume-up"></i>
+			</div>
+		</div>
 
-		</div>
-		<div id="mainArtists">
-		</div>
-		<div id="mainPlaylists">
-		</div>	
-		<div id="mainAlbums">	
-		</div>
-		<div id="mainSearch">	
-			<div id="search">
-			<input type="text" class="searchText" id="searchAll" placeholder="Search.." name="search" onkeyup="search();"/>
-				<div id="library">
-					<table id="libraryTable" class="resultsTable">
+		<div class = "mainPages">
+			<div id="currentCue">
+				<button id="exit" v-on:click="closeCurrent">X</button>
+				<img id="Qart" src="https://99designs-blog.imgix.net/blog/wp-content/uploads/2017/12/attachment_68585523.jpg?auto=format&q=60&fit=max&w=930">
+				<div id="header"><h1>CUETITLE</h1></div>
+				<div id="Q">
+					<table id="Qtable">
 					  <thead>
-					    <tr>
-					      <th scope="col"></th>
-					      <th scope="col"></th>
-					      <th scope="col"></th>
-					      <th scope="col"></th>
-					      <th scope="col"></th>
-					    </tr>
+						<tr>
+						  <th scope="col"></th>
+						  <th scope="col"></th>
+						  <th scope="col"></th>
+						  <th scope="col"></th>
+						</tr>
 					  </thead>
-					  <tbody id="libraryBody">
+					  <tbody id="Qtable">
 					  </tbody>
-			  		</table>
+					  </table>
+				</div>
+
+			</div>
+			<div id="mainArtists">
+			</div>
+			<div id="mainPlaylists">
+			</div>	
+			<div id="mainAlbums">	
+			</div>
+			<div id="mainSongs">	
+				<div id="search">
+				<input type="text" class="searchText" id="searchAll" placeholder="Search.." name="search" onkeyup="search();"/>
+					<div id="library">
+						<table id="libraryTable" class="resultsTable">
+						  <thead>
+						    <tr>
+						      <th scope="col"></th>
+						      <th scope="col"></th>
+						      <th scope="col"></th>
+						      <th scope="col"></th>
+						      <th scope="col"></th>
+						    </tr>
+						  </thead>
+						  <tbody id="libraryBody">
+						  </tbody>
+				  		</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -127,5 +126,7 @@
 	</script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
 	</script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="./js/openPlayer.js"></script>
 </body>
 </html>

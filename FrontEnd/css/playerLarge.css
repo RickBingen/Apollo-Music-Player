@@ -15,7 +15,7 @@ body{
 }
 
 #mainAlbums {
-  display: block;
+  display: none;
 }
 
 #mainArtists {
@@ -26,8 +26,8 @@ body{
   padding-left: 5%;
 }
 
-#mainSearch{
-  display: none;
+#mainSongs{
+  display: block;
   float: left;
   width: 98%;
   position: relative;
@@ -123,8 +123,7 @@ td{
   max-width: 5%;
   border:none;
   float: left;
-  background-color: Transparent;
-
+  background-color: transparent;
 }
 
 .apolloBrand{
