@@ -75,6 +75,7 @@ const app = new Vue({
       });
     },
     generateLibrary: function(){
+      console.log(this.objList);
       for (var i = 0; i < this.objList.songs.length; i++) {
         songLength = this.objList.songs[i].duration;
         minutes = (songLength/60);
@@ -84,9 +85,14 @@ const app = new Vue({
       this.songs = this.objList.songs;
     },
     addAlbums: function(){
-      var library = [];
-      library = this.objList.albums;
-      for(var i = 0; i < library.length; i++){
+      for (var i = 0; i < this.objList.albums.length; i++){
+        if (this.objList.albums[i].pic === null || this.objList.albums[i].pic ==="none"){
+          this.objList.albums[i].pic = "./images/AlbumArt-01.png"
+        }
+      }
+
+      this.albums = this.objList.albums;
+      /*for(var i = 0; i < this.albums.length; i++){
         if ((library[i].pic == null) || (library[i].pic == "none")){
           var img = document.createElement('img');
           img.setAttribute("src", "./images/AlbumArt-01.png");
@@ -104,23 +110,7 @@ const app = new Vue({
           img.setAttribute("id" , library[i].pic);
           document.getElementById("mainAlbums").append(img);
         }
-      }
-      this.albumButtons();
-    },
-    albumButtons: function(){
-      var library = [];
-      library = this.objList.albums;
-      for(var i = 0; i < library.length; i++){
-        if (library[i].pic == "./images/Logo1.png"){
-          continue;
-        }
-        else 
-        {
-          document.getElementById(library[i].pic).setAttribute('onclick' ,function changePlaying() {
-            document.getElementById('currentAlbum').src=library[i];
-          });
-        }
-      }
+      }*/
     },
     addPlaylists: function(){
       var img = document.createElement('img');
@@ -160,7 +150,7 @@ const app = new Vue({
     },
     boot2: function(){
       this.currentlyPlaying();
-      //this.addAlbums();
+      this.addAlbums();
       //this.addPlaylists();
       //this.addArtists();
       this.generateLibrary();

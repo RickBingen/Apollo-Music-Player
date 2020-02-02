@@ -78,24 +78,6 @@ body{
   display: none;
 }
 
-.square{
-  opacity: 0.8;
-  max-width: 30%;
-  margin: 1%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  border: none;
-}
-
-.square:hover{
-  opacity: 1;
-  max-width: 30%;
-  margin: 1%;
-  padding-top: 1%;
-  padding-bottom: 1%;
-  border: none;
-}
-
 #tableCont{
   color: inherit;
   width: 100%;
@@ -494,6 +476,54 @@ tr:nth-child(even) {
  top: 50%;
  -ms-transform: translateY(-25%);
  transform: translateY(-25%);
+}
 
+.albumContainer{
+  padding-top: 5%;
+  display: block;
+  width: 100%;
+}
+
+#albumImgs{
+  position: relative;
+  width: 30%;
+  margin: 1%;
+  border: none;
+  display: inline-block;
+}
+
+.square{
+  width: 100%;
+  height: auto;
+}
+
+.albumOverlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #262626;
+}
+
+#albumImgs:hover .albumOverlay {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.albumText {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
 }
 

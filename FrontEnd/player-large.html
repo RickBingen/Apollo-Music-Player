@@ -98,6 +98,7 @@
        					<i class="fas fa-search"></i>
        				</a>
      			</div>
+
 			</div>
 			<div id="mainPlaylists" v-show="currentPage === 'playlists'">
 				<div class="search-box">
@@ -114,6 +115,14 @@
        					<i class="fas fa-search"></i>
        				</a>
      			</div>
+     			<div class="albumContainer">
+	     			<div id="albumImgs" v-for="album in albums" v-bind:key="album.albumname">
+	     				<img class="square albumType" :id="album.pic" :src="album.pic" >
+	     				<div class="albumOverlay">
+	    					<div class="albumText">{{album.albumname}}</div>
+	  					</div>
+	     			</div>
+	     		</div>
 			</div>
 			<div id="mainSongs" v-show="currentPage === 'songs'">	
 				<div class="search-box">
