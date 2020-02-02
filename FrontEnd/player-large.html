@@ -94,13 +94,16 @@
 				</div>
 
 			</div>
-			<div id="mainArtists">
+			<div id="mainArtists" v-show="currentPage === 'artists'">
+				<h1>Artists</h1>
 			</div>
-			<div id="mainPlaylists">
+			<div id="mainPlaylists" v-show="currentPage === 'playlists'">
+				<h1>Playlists</h1>
 			</div>	
-			<div id="mainAlbums">	
+			<div id="mainAlbums" v-show="currentPage === 'albums'">
+				<h1>Albums</h1>	
 			</div>
-			<div id="mainSongs">	
+			<div id="mainSongs" v-show="currentPage === 'songs'">	
 				<div id="search">
 				<input type="text" class="searchText" id="searchAll" placeholder="Search.." name="search" onkeyup="search();"/>
 					<div id="library">

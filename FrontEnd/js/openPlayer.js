@@ -5,7 +5,8 @@ const app = new Vue({
     songs: [],
     albums: [],
     artists: [],
-    playlists: []
+    playlists: [],
+    currentPage: "songs"
   },
   methods: {
     setVolume: function(val){
@@ -203,9 +204,9 @@ const app = new Vue({
     },
     boot2: function(){
       this.currentlyPlaying();
-      this.addAlbums();
-      this.addPlaylists();
-      this.addArtists();
+      //this.addAlbums();
+      //this.addPlaylists();
+      //this.addArtists();
       this.generateLibrary();
     },
     fetchAllSongs: function(){
@@ -231,36 +232,16 @@ const app = new Vue({
       this.fetchAllSongs();
     },
     go2Songs: function(){
-      if (document.getElementById("mainSongs").style.display = "none"){
-        document.getElementById("mainSongs").style.display = "block";
-        document.getElementById("mainPlaylists").style.display = "none";
-        document.getElementById("mainArtists").style.display = "none";
-        document.getElementById("mainAlbums").style.display = "none";
-      }
+      this.currentPage = "songs";
     },
     go2Playlists: function(){
-      if (document.getElementById("mainPlaylists").style.display = "none"){
-        document.getElementById("mainPlaylists").style.display = "block";
-        document.getElementById("mainArtists").style.display = "none";
-        document.getElementById("mainAlbums").style.display = "none";
-        document.getElementById("mainSongs").style.display = "none";
-      }
+      this.currentPage = "playlists";
     },
     go2Albums: function(){
-      if (document.getElementById("mainAlbums").style.display = "none"){
-        document.getElementById("mainAlbums").style.display = "block";
-        document.getElementById("mainPlaylists").style.display = "none"
-        document.getElementById("mainArtists").style.display = "none"
-        document.getElementById("mainSongs").style.display = "none"
-      }
+      this.currentPage = "albums"
     },
     go2Artists: function(){
-      if (document.getElementById("mainArtists").style.display = "none"){
-        document.getElementById("mainArtists").style.display = "block";
-        document.getElementById("mainPlaylists").style.display = "none";
-        document.getElementById("mainAlbums").style.display = "none";
-        document.getElementById("mainSongs").style.display = "none";
-      }
+      this.currentPage = "artists"
     },
     current: function(){
       if (document.getElementById("currentCue").style.display = "none"){

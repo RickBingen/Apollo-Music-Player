@@ -15,11 +15,11 @@ body{
 }
 
 #mainAlbums {
-  display: none;
+  display: block;
 }
 
 #mainArtists {
-  display: none;
+  display: block;
   float: left;
   width: 80%;
   position: relative;
@@ -42,7 +42,7 @@ body{
   z-index: 1;
 }
 #mainPlaylists {
-  display: none;
+  display: block;
 }
 
 .navigation-bar{
