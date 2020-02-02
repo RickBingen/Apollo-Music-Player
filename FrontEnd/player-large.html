@@ -7,8 +7,6 @@
 	</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" inegrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Baumans&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/ab83053a15.js" crossorigin="anonymous"></script>
@@ -21,11 +19,10 @@
 <body>	
 	<div id="app">
 		<div class="navigation-bar">
-				<!--<i onclick="go2Songs()" role="button" aria-expanded="false" class="fas fa-search searchButton navigation-bar"></i>-->
-				<i class="songSearch  navigation-bar" href="#" v-on:click="go2Songs" style="font-family: Azonix">Songs</i>
-				<i class="albums  navigation-bar" href="#" v-on:click="go2Albums" style="font-family: Azonix">Albums</i>
-				<i class="playlist  navigation-bar" href="#"v-on:click="go2Playlists" style="font-family: Azonix">Playlists</i>
-				<i class="artists  navigation-bar" href="#"v-on:click="go2Artists" style="font-family: Azonix">Artists</i>
+				<i class="songs  navigation-bar nav-text" href="#" v-on:click="go2Songs" style="font-family: Azonix">Songs</i>
+				<i class="albums  navigation-bar nav-text" href="#" v-on:click="go2Albums" style="font-family: Azonix">Albums</i>
+				<i class="playlist  navigation-bar nav-text" href="#"v-on:click="go2Playlists" style="font-family: Azonix">Playlists</i>
+				<i class="artists  navigation-bar nav-text" href="#"v-on:click="go2Artists" style="font-family: Azonix">Artists</i>
 			<div class="logoContainer">
 				<img id="logoBTN" class="logo-button" data-toggle="collapse" data-target="currentlyPlaying"src="./images/Logo.png"/>
 			</div>
@@ -104,31 +101,35 @@
 				<h1>Albums</h1>	
 			</div>
 			<div id="mainSongs" v-show="currentPage === 'songs'">	
-				<div id="search">
-				<input type="text" class="searchText" id="searchAll" placeholder="Search.." name="search" onkeyup="search();"/>
-					<div id="library">
-						<table id="libraryTable" class="resultsTable">
-						  <thead>
-						    <tr>
-						      <th scope="col"></th>
-						      <th scope="col"></th>
-						      <th scope="col"></th>
-						      <th scope="col"></th>
-						      <th scope="col"></th>
-						    </tr>
-						  </thead>
-						  <tbody id="libraryBody">
-						  </tbody>
-				  		</table>
-					</div>
+				<div class="search-box">
+       				<input type="text" name="" class="search-txt" placeholder="Search..."/>
+       				<a class="search-btn" href="#">
+       					<i class="fas fa-search"></i>
+       				</a>
+     			</div>
+				<div id="library">
+					<table id="libraryTable" class="resultsTable">
+					  <thead id="songTableHead">
+					    <tr>
+					      <th class="songHeader" scope="col">Title</th>
+					      <th class="songHeader" scope="col">Artist</th>
+					      <th class="songHeader" scope="col">Album</th>
+					      <th class="songHeader" scope="col">Duration</th>
+					    </tr>
+					  </thead>
+					  <tbody id="libraryBody">
+					  	<tr v-for="song in songs" v-bind:key="song.id" v-on:click="idSendPlay(song.id)">
+					  		<td class="songTd">{{song.title}}</td>
+					  		<td class="songTd">{{song.artist}}</td>
+					  		<td class="songTd">{{song.album}}</td>
+					  		<td class="songTd">{{song.duration}}</td>
+					  	</tr>
+					  </tbody>
+			  		</table>
 				</div>
 			</div>
 		</div>
 	</div>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-	</script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-	</script>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 	<script src="./js/openPlayer.js"></script>
 </body>

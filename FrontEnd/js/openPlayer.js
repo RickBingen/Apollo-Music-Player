@@ -23,21 +23,6 @@ const app = new Vue({
         return response.text();
       }).then(function(text){});
     },
-    addRowHandlers: function(){
-      var table = document.getElementById("libraryTable");
-      var rows = table.getElementsByTagName("tr");
-      for (i = 0; i < rows.length; i++) {
-        var currentRow = table.rows[i];
-        var createClickHandler = function(row) 
-          {
-            return function() { 
-              var id = row.id;
-              idSendPlay(id)
-            };
-          };
-        currentRow.onclick = createClickHandler(currentRow);
-      }
-    },
     progressBar: function(obj){
       var bar = document.getElementById("progBar");
       barPercent = (obj.elapsed / obj.duration) * 100;
@@ -90,42 +75,13 @@ const app = new Vue({
       });
     },
     generateLibrary: function(){
-      var library = [];
-      library = this.objList.songs;
-      var songList = document.getElementById("libraryBody");
-      for (var i = 0; i < library.length; i++) {
-        var song = document.createElement("tr");
-
-        song.setAttribute("id", library[i].id);
-        song.setAttribute("class", "libraryRow");
-        this.addRowHandlers();
-
-        var cell = document.createElement("td");
-        var songName = document.createTextNode(library[i].title);
-        cell.appendChild(songName);
-        song.appendChild(cell);
-
-        cell = document.createElement("td");
-        var artistName = document.createTextNode(library[i].artist);
-        cell.appendChild(artistName);
-        song.appendChild(cell);
-
-
-        cell = document.createElement("td");
-        var albumName = document.createTextNode(library[i].album);
-        cell.appendChild(albumName);
-        song.appendChild(cell);
-
-        cell = document.createElement("td");
-        songLength = library[i].duration;
+      for (var i = 0; i < this.objList.songs.length; i++) {
+        songLength = this.objList.songs[i].duration;
         minutes = (songLength/60);
         minutes = minutes.toFixed(2);
-        var duration = document.createTextNode(minutes);
-        cell.appendChild(duration);
-        song.appendChild(cell);
-
-        songList.appendChild(song);
+        this.objList.songs[i].duration = minutes;
       }
+      this.songs = this.objList.songs;
     },
     addAlbums: function(){
       var library = [];
@@ -307,6 +263,7 @@ const app = new Vue({
       }
     },    
     idSendPlay: function(val){
+      console.log(val);
       var asJSON = JSON.stringify({'id':val});fetch('http://localhost:5000/api/play_selected', {
       method: 'POST',
       mode: "cors",

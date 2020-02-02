@@ -35,12 +35,13 @@ body{
 }
 
 .mainPages{
-  margin-left: 30%;
+  margin-left: 25%;
   width: 70%;
   transition: margin-left .5s;
-  padding-top: 5%;
+  padding-top: 30px;
   z-index: 1;
 }
+
 #mainPlaylists {
   display: block;
 }
@@ -55,8 +56,8 @@ body{
   overflow: hidden;
 }
 
-#search , .searchText{
-  width: 90%;
+.nav-text{
+  font-size: 20px;
 }
 
 #currentCue{
@@ -102,7 +103,7 @@ body{
 }
 
 
-.closebtn, .searchText{
+.closebtn,{
   font-size: 20px;
   font-family: "Helvetica Neue";
   font-weight: 200;
@@ -110,7 +111,6 @@ body{
 }
 
 td{
-  padding-top: 4%;
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -135,17 +135,9 @@ td{
   padding-left: 2%;
 }
 
-.searchButton{
-  padding-top: 2.9%;
-  padding-right: 5%;
-  float: right;
-  background-color: transparent;
-  cursor: pointer;
-
-}
-.songSearch{
+.songs{
   padding-top: 2.5%;
-  padding-right: 1%;
+  padding-right: 5%;
   float: right;
   background-color: transparent;
   cursor: pointer;
@@ -431,5 +423,77 @@ i.fa-volume-up {
   margin-left: -8px;
   margin-top: -4px;
   outline: none;
+}
+
+#library {
+  margin-top: 5%;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(107, 107, 107, 0.171);
+}
+
+.songTd
+{
+  padding: 3px;
+  cursor: pointer;
+}
+
+#songTableHead {
+  border-bottom: 2px solid white;
+}
+
+.search-box {
+ position: absolute;
+ background: rgba(107, 107, 107, 0.171);
+ height: 40px;
+ border-radius: 40px;
+ padding: 10px;
+}
+
+.search-box:hover > .search-txt {
+ width: 240px;
+ padding: 0 6px;
+}
+
+.search-btn {
+ color: rgba(107, 107, 107, 0.171);
+ float: right;
+ width: 40px;
+ height: 40px;
+ border-radius: 50%;
+ background: none;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ transition: 0.4s;
+ cursor: pointer;
+ top: 50%;
+ -ms-transform: translateY(-25%);
+ transform: translateY(-25%);
+}
+
+.search-btn > i {
+ font-size: 30px;
+ color: grey;
+}
+
+.search-txt {
+ border: none;
+ background: none;
+ outline: none;
+ float: left;
+ padding: 0;
+ color: grey;
+ font-size: 24px;
+ transition: 0.4s;
+ line-height: 40px;
+ width: 0px;
+ font-weight: bold;
+ font-family: "Helvetica Neue";
+ top: 50%;
+ -ms-transform: translateY(-25%);
+ transform: translateY(-25%);
+
 }
 
