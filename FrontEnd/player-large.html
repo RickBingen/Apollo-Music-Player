@@ -19,14 +19,14 @@
 <body>	
 	<div id="app">
 		<div class="navigation-bar">
-				<i class="songs  navigation-bar nav-text" href="#" v-on:click="go2Songs" style="font-family: Azonix">Songs</i>
+				<i class="songs  navigation-bar nav-text" href="#" v-on:click="go2Songs('')" style="font-family: Azonix">Songs</i>
 				<i class="albums  navigation-bar nav-text" href="#" v-on:click="go2Albums" style="font-family: Azonix">Albums</i>
 				<i class="playlist  navigation-bar nav-text" href="#"v-on:click="go2Playlists" style="font-family: Azonix">Playlists</i>
 				<i class="artists  navigation-bar nav-text" href="#"v-on:click="go2Artists" style="font-family: Azonix">Artists</i>
 			<div class="logoContainer">
-				<img id="logoBTN" class="logo-button" data-toggle="collapse" data-target="currentlyPlaying"src="./images/Logo.png"/>
+				<img id="logoBTN" class="logo-button" data-toggle="collapse" data-target="currentlyPlaying" v-on:click="go2Songs('')" src="./images/Logo.png"/>
 			</div>
-			<div class="apolloBrand" href="#">
+			<div class="apolloBrand" v-on:click="go2Songs('')">
 				APOLLO
 			</div>
 		</div>
@@ -99,7 +99,7 @@
      			</div>
      			<div id="artistList">
      				<ul v-for="artist in artistQuery" v-bind:key="artist.name">
-     					<li class="artistData">{{artist.name}}</li>
+     					<li class="artistData" v-on:click="go2Songs(artist.name)">{{artist.name}}</li>
      				</ul>
      			</div>
 			</div>
@@ -119,7 +119,7 @@
        				</a>
      			</div>
      			<div class="albumContainer">
-	     			<div id="albumImgs" v-for="album in albumQuery" v-bind:key="album.albumname">
+	     			<div id="albumImgs" v-for="album in albumQuery" v-bind:key="album.albumname" v-on:click="go2Songs(album.albumname)">
 	     				<img class="square albumType" :id="album.pic" :src="album.pic" >
 	     				<div class="albumOverlay">
 	    					<div class="albumText">{{album.albumname}}</div>

@@ -132,7 +132,8 @@ const app = new Vue({
 
       this.fetchAllSongs();
     },
-    go2Songs: function(){
+    go2Songs: function(query){
+      this.searchSong = query;
       this.currentPage = "songs";
     },
     go2Playlists: function(){
