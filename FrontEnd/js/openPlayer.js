@@ -6,7 +6,11 @@ const app = new Vue({
     albums: [],
     artists: [],
     playlists: [],
-    currentPage: "songs"
+    currentPage: "songs",
+    searchArtist: null,
+    searchAlbum: null,
+    searchPlaylist: null,
+    searchSong: null
   },
   methods: {
     setVolume: function(val){
@@ -92,67 +96,18 @@ const app = new Vue({
       }
 
       this.albums = this.objList.albums;
-      /*for(var i = 0; i < this.albums.length; i++){
-        if ((library[i].pic == null) || (library[i].pic == "none")){
-          var img = document.createElement('img');
-          img.setAttribute("src", "./images/AlbumArt-01.png");
-          img.classList.add("square");
-          img.classList.add("albumType");
-          img.setAttribute("id", library[i].pic);
-          document.getElementById("mainAlbums").append(img);
-        }
-        else 
-        {
-          var img = document.createElement('img');
-          img.setAttribute("src" , library[i].pic);
-          img.classList.add("square");
-          img.classList.add("albumType");
-          img.setAttribute("id" , library[i].pic);
-          document.getElementById("mainAlbums").append(img);
-        }
-      }*/
     },
     addPlaylists: function(){
-      var img = document.createElement('img');
-      img.setAttribute('onclick', function newPlaylist(){
-        document.getElementById("mainPlaylist").append(img);
-      });
-      img.src = "https://cdn.pixabay.com/photo/2018/11/13/21/43/instagram-3814051_1280.png"
-      img.classList.add("square");
-      img.setAttribute("onclick" , "current()")
-      document.getElementById("mainPlaylists").append(img);
+      
     },
     addArtists: function(){
-      var library = [];
-      library = this.objList.artists;
-      let artistSet = new Set();
-      var artistTable = document.createElement('table');
-      artistTable.classList.add("artistDisplay");
-
-      for (var i=0; i < library.length; i++){
-        artistSet.add(library[i].name);
-      };
-
-      let artistArray = Array.from(artistSet);
-      artistArray.sort();
-      for(var i =0; i<artistArray.length; i++){
-
-        var row = document.createElement("tr");
-
-        var artistName = document.createElement("td");
-        var artist = document.createTextNode(artistArray[i]);
-        artistName.append(artist);
-        row.append(artistName);
-        row.setAttribute("id" , "artist-" + artistArray[i]);
-        artistTable.append(row);
-      } 
-      document.getElementById("mainArtists").append(artistTable);
+      this.artists = this.objList.artists;
     },
     boot2: function(){
       this.currentlyPlaying();
       this.addAlbums();
-      //this.addPlaylists();
-      //this.addArtists();
+      this.addPlaylists();
+      this.addArtists();
       this.generateLibrary();
     },
     fetchAllSongs: function(){
@@ -298,6 +253,38 @@ const app = new Vue({
   },
   mounted(){
     this.boot();
+  },
+  computed:{
+    artistQuery(){
+      if(this.searchArtist){
+        return this.artists.filter((artist)=>{
+          return this.searchArtist.toLowerCase().split(' ').every(v => artist.name.toLowerCase().includes(v))
+        })
+      } else{
+        return this.artists;
+      }
+    },
+    albumQuery(){
+      if(this.searchAlbum){
+        return this.albums.filter((album)=>{
+          return this.searchAlbum.toLowerCase().split(' ').every(v => album.albumname.toLowerCase().includes(v)) 
+          || this.searchAlbum.toLowerCase().split(' ').every(v => album.artist.toLowerCase().includes(v));
+        })
+      } else{
+        return this.albums;
+      }
+    },
+    songQuery(){
+      if(this.searchSong){
+        return this.songs.filter((song)=>{
+          return this.searchSong.toLowerCase().split(' ').every(v => song.title.toLowerCase().includes(v)) 
+          || this.searchSong.toLowerCase().split(' ').every(v => song.artist.toLowerCase().includes(v))
+          || this.searchSong.toLowerCase().split(' ').every(v => song.album.toLowerCase().includes(v));
+        })
+      } else{
+        return this.songs;
+      }
+    }
   }
 })
 

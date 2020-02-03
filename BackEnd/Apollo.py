@@ -50,7 +50,6 @@ def startup_func():
 		client.rescan()
 		client.clear()
 		temp_list = client.listall() 
-		print(temp_list)
 		for songs in temp_list: #builds a queue with all songs. can also use a playlist
 			if 'file' in songs and songs['file'].endswith('.mp3'):
 				client.add(songs['file'])

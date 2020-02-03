@@ -87,36 +87,39 @@
 					  </thead>
 					  <tbody id="Qtable">
 					  </tbody>
-					  </table>
+					</table>
 				</div>
-
 			</div>
 			<div id="mainArtists" v-show="currentPage === 'artists'">
 				<div class="search-box">
-       				<input type="text" name="" class="search-txt" placeholder="Search Artists..."/>
-       				<a class="search-btn" href="#">
+       				<input type="text" name="" class="search-txt" v-model="searchArtist" placeholder="Search Artists..."/>
+       				<a class="search-btn">
        					<i class="fas fa-search"></i>
        				</a>
      			</div>
-
+     			<div id="artistList">
+     				<ul v-for="artist in artistQuery" v-bind:key="artist.name">
+     					<li class="artistData">{{artist.name}}</li>
+     				</ul>
+     			</div>
 			</div>
 			<div id="mainPlaylists" v-show="currentPage === 'playlists'">
 				<div class="search-box">
-       				<input type="text" name="" class="search-txt" placeholder="Search..."/>
-       				<a class="search-btn" href="#">
+       				<input type="text" name="" class="search-txt" placeholder="Search Playlists..."/>
+       				<a class="search-btn">
        					<i class="fas fa-search"></i>
        				</a>
      			</div>
 			</div>	
 			<div id="mainAlbums" v-show="currentPage === 'albums'">
 				<div class="search-box">
-       				<input type="text" name="" class="search-txt" placeholder="Search..."/>
-       				<a class="search-btn" href="#">
+       				<input type="text" name="" class="search-txt" v-model="searchAlbum" placeholder="Search Albums..."/>
+       				<a class="search-btn">
        					<i class="fas fa-search"></i>
        				</a>
      			</div>
      			<div class="albumContainer">
-	     			<div id="albumImgs" v-for="album in albums" v-bind:key="album.albumname">
+	     			<div id="albumImgs" v-for="album in albumQuery" v-bind:key="album.albumname">
 	     				<img class="square albumType" :id="album.pic" :src="album.pic" >
 	     				<div class="albumOverlay">
 	    					<div class="albumText">{{album.albumname}}</div>
@@ -126,8 +129,8 @@
 			</div>
 			<div id="mainSongs" v-show="currentPage === 'songs'">	
 				<div class="search-box">
-       				<input type="text" name="" class="search-txt" placeholder="Search..."/>
-       				<a class="search-btn" href="#">
+       				<input type="text" name="" class="search-txt" v-model="searchSong" placeholder="Search..."/>
+       				<a class="search-btn" >
        					<i class="fas fa-search"></i>
        				</a>
      			</div>
@@ -142,7 +145,7 @@
 					    </tr>
 					  </thead>
 					  <tbody id="libraryBody">
-					  	<tr v-for="song in songs" v-bind:key="song.id" v-on:click="idSendPlay(song.id)">
+					  	<tr v-for="song in songQuery" v-bind:key="song.id" v-on:click="idSendPlay(song.id)">
 					  		<td class="songTd">{{song.title}}</td>
 					  		<td class="songTd">{{song.artist}}</td>
 					  		<td class="songTd">{{song.album}}</td>
