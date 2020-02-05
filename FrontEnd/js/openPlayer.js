@@ -10,7 +10,16 @@ const app = new Vue({
     searchArtist: null,
     searchAlbum: null,
     searchPlaylist: null,
-    searchSong: null
+    searchSong: null,
+    playToggled: false,
+    repeatToggle: "off",
+    currentSongObj: {
+      currentAlbumArt: "./images/AlbumArt-01.png",
+      currentSongTitle: null,
+      currentArtistName: null,
+      currentDuration: null,
+      currentElapsed: null
+    }
   },
   methods: {
     setVolume: function(val){
@@ -63,16 +72,19 @@ const app = new Vue({
         var g2 = obj.palette[1][1];
         var b2 = obj.palette[1][2];
         document.getElementById('currentlyPlaying').style.backgroundImage = 'linear-gradient(to bottom, rgba('+r+','+g+','+b+','+1+'), rgba('+r2+','+g2+','+b2+','+0+'))';
+
         if (obj.pic == '' || obj.pic == null || obj.pic == 'none') {
-          document.getElementById('currentAlbum').setAttribute('src', "./images/AlbumArt-01.png");
+          app.currentSongObj.currentAlbumArt = "./images/AlbumArt-01.png";
         }
         else {
-          document.getElementById('currentAlbum').setAttribute('src', obj.pic);
+          app.currentSongObj.currentAlbumArt = obj.pic;
         }
-        document.getElementById('returnCurrentSong').innerHTML = obj.title;
-        document.getElementById('returnCurrentArtist').innerHTML = obj.artist;
-        document.getElementById('returnCurrentDuration').innerHTML = app.secondsTo_MMSS(obj.duration);
-        document.getElementById('returnCurrentElapsed').innerHTML = app.secondsTo_MMSS(obj.elapsed);
+
+        app.currentSongObj.currentSongTitle = obj.title;
+        app.currentSongObj.currentArtistName = obj.artist;
+        app.currentSongObj.currentDuration = app.secondsTo_MMSS(obj.duration);
+        app.currentSongObj.currentElapsed = app.secondsTo_MMSS(obj.elapsed);
+
         setInterval(app.currentlyPlaying(), 1000);
         setInterval(app.progressBar(obj), 500);
         delete obj

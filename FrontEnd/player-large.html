@@ -33,15 +33,18 @@
 
 		<div id="currentlyPlaying"class="currentlyPlaying"style="background-color: rgb(26, 26, 26)">
 	        <div class="currentlyShowing">
-				<i href="#" class = "artwork" id="returnCurrentAlbum"  onclick="filterSelection()"><img id="currentAlbum"class="playerAlbumArt" src="./images/Logo.png"/>
+				<i href="#" class = "artwork" id="returnCurrentAlbum" >
+					<img id="currentAlbum"class="playerAlbumArt" :src="currentSongObj.currentAlbumArt"/>
 				</i>
 			</div>
 			<div class="currentSong link">
-				<i id="returnCurrentSong" onclick="filterSelection()" >
+				<i id="returnCurrentSong" >
+					{{currentSongObj.currentSongTitle}}
 				</i>
 			</div>
 			<div class="currentArtist link">
-				<i id="returnCurrentArtist" onclick="filterSelection()" >
+				<i id="returnCurrentArtist" >
+					{{currentSongObj.currentArtistName}}
 				</i>
 			</div>
 			<div class="w3-container">
@@ -49,8 +52,8 @@
 				  <div id="progBar" class="w3-green w3-round" style="height:7px;width:0%"></div>
 				</div>
 			<div class="durations">
-				<i class="elapsed" href="#" style="font-family: Azonix" id="returnCurrentElapsed"></i>
-				<i class="duration" href="#" style="font-family: Azonix" id="returnCurrentDuration"></i>
+				<i class="elapsed" href="#" style="font-family: Azonix" id="returnCurrentElapsed">{{currentSongObj.currentElapsed}}</i>
+				<i class="duration" href="#" style="font-family: Azonix" id="returnCurrentDuration">{{currentSongObj.currentDuration}}</i>
 			</div>
 				<br>
 			</div>
